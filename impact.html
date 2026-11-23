@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Impact & Timeline — KisanDrishti AI</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .impact-hero {
+      min-height: 55vh;
+      display: flex; align-items: flex-end;
+      padding: 120px clamp(1.5rem,5vw,4rem) 5rem;
+      position: relative; overflow: hidden;
+    }
+    .impact-hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 50% 80%, rgba(42,92,49,0.3), transparent),
+        radial-gradient(ellipse 50% 40% at 20% 20%, rgba(224,124,36,0.1), transparent);
+    }
+    .impact-hero-content { position:relative; z-index:1; max-width:720px; }
+    .impact-hero-num {
+      font-family:'Syne',sans-serif;
+      font-size: clamp(6rem,15vw,12rem);
+      font-weight: 800; line-height: 1;
+      color: rgba(255,255,255,0.03);
+      position: absolute; right: clamp(1.5rem,5vw,4rem); top: 80px;
+      pointer-events: none; letter-spacing: -4px;
+    }
+
+    /* ─── STATS ─── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem;
+    }
+    .stat-card {
+      padding: 2.5rem 2rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 100%, var(--glow-color,rgba(106,191,114,0.1)), transparent 70%);
+    }
+    .stat-card.g { --glow-color: rgba(106,191,114,0.08); }
+    .stat-card.o { --glow-color: rgba(224,124,36,0.1); }
+    .big-num {
+      font-family:'Syne',sans-serif;
+      font-size: clamp(3rem,6vw,5rem);
+      font-weight: 800; letter-spacing: -2px; line-height: 1;
+      margin-bottom: 0.6rem; display: block;
+    }
+    .big-num.green  { color: var(--gleaf); }
+    .big-num.orange { color: var(--o2); }
+    .big-label { font-size: 0.9rem; color: var(--muted); }
+
+    /* ─── MISSION BANNER ─── */
+    .mission-banner {
+      padding: 3rem 3.5rem;
+      background: linear-gradient(135deg, rgba(42,92,49,0.2), rgba(224,124,36,0.1));
+      border-radius: var(--r); border: 1px solid rgba(106,191,114,0.15);
+      text-align: center;
+    }
+    .mission-banner blockquote {
+      font-family:'Syne',sans-serif;
+      font-size: clamp(1.3rem,3vw,2rem);
+      font-weight: 700; line-height: 1.3;
+      color: var(--white); letter-spacing: -0.5px;
+    }
+    .mission-banner blockquote span { color: var(--o2); }
+    .mission-banner cite {
+      display: block; margin-top: 1rem;
+      font-size: 0.85rem; color: var(--muted);
+      font-style: normal;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline { display: flex; flex-direction: column; gap: 0; max-width: 780px; }
+    .tl-item {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 2rem; padding: 1.8rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-left { padding-right: 2rem; border-right: 1px solid var(--border); }
+    .tl-phase {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .tl-phase.green  { color: var(--gleaf); }
+    .tl-phase.orange { color: var(--o2); }
+    .tl-days {
+      font-family:'Syne',sans-serif;
+      font-size: 1.3rem; font-weight: 800;
+      color: var(--white); letter-spacing: -0.5px;
+    }
+    .tl-right h3 { font-weight: 600; font-size: 1rem; margin-bottom: 0.4rem; }
+    .tl-right p  { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .tl-status {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 0.6rem;
+      font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.7rem;
+      border-radius: 100px;
+    }
+    .tl-status.done { background: rgba(106,191,114,0.12); color: var(--gleaf); border:1px solid rgba(106,191,114,0.2); }
+    .tl-status.active { background: rgba(224,124,36,0.12); color: var(--o3); border:1px solid rgba(224,124,36,0.2); }
+    .tl-status.soon { background: rgba(255,255,255,0.05); color: var(--muted); border:1px solid var(--border); }
+    .tl-status-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .tl-status.active .tl-status-dot { animation: pulse 1.5s infinite; }
+
+    /* ─── TRACKS ─── */
+    .tracks-grid {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 1.2rem;
+    }
+    .track-card {
+      padding: 1.5rem 1.8rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .track-num {
+      font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700;
+      color: var(--o2); flex-shrink:0; padding-top:3px;
+    }
+    .track-card h4 { font-weight:600; font-size:0.9rem; margin-bottom:0.3rem; }
+    .track-card p  { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+    /* ─── FINAL CTA ─── */
+    .final-cta {
+      text-align: center; padding: 5rem clamp(1.5rem,5vw,4rem);
+      background: linear-gradient(to bottom, var(--g0), var(--g1));
+      border-radius: 2rem;
+    }
+    .final-cta h2 {
+      font-family:'Syne',sans-serif;
+      font-size: clamp(2rem,5vw,3.5rem);
+      font-weight: 800; letter-spacing: -1.5px;
+      margin-bottom: 1rem; line-height: 1.1;
+    }
+    .final-cta p { font-size:1rem; color:var(--muted); margin-bottom:2rem; }
+    .final-cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .built-by {
+      margin-top: 3rem; font-size:0.85rem; color:var(--muted);
+    }
+    .built-by strong { color:var(--white); }
+
+    @media(max-width:900px) {
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .tl-item { grid-template-columns:1fr; gap:0.8rem; }
+      .tl-left { border-right:none; padding-right:0; border-bottom:none; }
+      .tracks-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:500px) {
+      .stats-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Kisan<span class="nav-logo-dot">Drishti</span> AI</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="problem.html">Problem</a></li>
+    <li><a href="solution.html">Solution</a></li>
+    <li><a href="impact.html">Impact</a></li>
+  </ul>
+  <a href="index.html" class="nav-pill">← Back to Home</a>
+  <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <button class="mobile-close">✕</button>
+  <a href="index.html">Home</a>
+  <a href="problem.html">Problem</a>
+  <a href="solution.html">Solution</a>
+  <a href="impact.html">Impact</a>
+</div>
+
+<!-- HERO -->
+<div class="impact-hero page">
+  <div class="impact-hero-bg"></div>
+  <span class="impact-hero-num">03</span>
+  <div class="impact-hero-content">
+    <p class="section-eyebrow reveal">Expected Impact</p>
+    <h1 class="section-heading reveal reveal-delay-1">Measurable farm-level <span class="accent">outcomes</span></h1>
+    <p class="section-lead reveal reveal-delay-2" style="margin-bottom:0">Empowering 120M+ Indian smallholder farmers with zero-cost, offline crop intelligence.</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="section page">
+  <div class="stats-row">
+    <div class="glass stat-card g reveal">
+      <span class="big-num green" data-count="94" data-suffix="%">0%</span>
+      <span class="big-label">Offline Leaf Accuracy</span>
+    </div>
+    <div class="glass stat-card o reveal reveal-delay-1">
+      <span class="big-num orange" data-count="30" data-suffix="%">0%</span>
+      <span class="big-label">Lower Pesticide Spend</span>
+    </div>
+    <div class="glass stat-card g reveal reveal-delay-2">
+      <span class="big-num green" style="font-size:clamp(2.5rem,4.5vw,4rem)">&lt;15MB</span>
+      <span class="big-label">Total App Footprint</span>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION BANNER -->
+<section class="section page" style="padding-top:0">
+  <div class="mission-banner reveal">
+    <blockquote>
+      "Empowering <span>120M+</span> Indian smallholder farmers<br>with zero-cost crop intelligence."
+    </blockquote>
+    <cite>KisanDrishti AI — Innovate India 2026</cite>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section page">
+  <p class="section-eyebrow reveal">Execution Plan</p>
+  <h2 class="section-heading reveal reveal-delay-1">Round 2 Sprint<br><span class="accent">Nov 21 – Dec 6</span></h2>
+  <div class="timeline" style="margin-top:3rem">
+    <div class="tl-item reveal">
+      <div class="tl-left">
+        <div class="tl-phase green">Model Training</div>
+        <div class="tl-days">Days 1–4</div>
+      </div>
+      <div class="tl-right">
+        <h3>Fine-tune MobileNetV3</h3>
+        <p>Train on PlantVillage &amp; Indian crop datasets for 40+ disease classes. Quantize for TFLite deployment.</p>
+        <span class="tl-status done"><span class="tl-status-dot"></span>Complete</span>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-1">
+      <div class="tl-left">
+        <div class="tl-phase green">Mobile App</div>
+        <div class="tl-days">Days 5–9</div>
+      </div>
+      <div class="tl-right">
+        <h3>Build Flutter UI</h3>
+        <p>Offline TFLite camera inference, disease results screen, local SQLite caching layer.</p>
+        <span class="tl-status active"><span class="tl-status-dot"></span>In progress</span>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-2">
+      <div class="tl-left">
+        <div class="tl-phase orange">Vernacular Voice</div>
+        <div class="tl-days">Days 10–13</div>
+      </div>
+      <div class="tl-right">
+        <h3>Integrate Bhashini</h3>
+        <p>Regional audio remedies in 4 languages. Offline playback via SQLite-cached audio blobs.</p>
+        <span class="tl-status soon"><span class="tl-status-dot"></span>Up next</span>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-3">
+      <div class="tl-left">
+        <div class="tl-phase green">Testing &amp; Demo</div>
+        <div class="tl-days">Days 14–16</div>
+      </div>
+      <div class="tl-right">
+        <h3>Field Validation &amp; Pitch</h3>
+        <p>Field-validate leaf scans against ground truth. Record live Round 3 demo video.</p>
+        <span class="tl-status soon"><span class="tl-status-dot"></span>Up next</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INNOVATION TRACKS -->
+<section class="section page" style="padding-top:0">
+  <p class="section-eyebrow reveal">Innovation Track</p>
+  <h2 class="section-heading reveal reveal-delay-1">Why <span class="accent">AI &amp; Emerging Tech</span></h2>
+  <div class="tracks-grid" style="margin-top:2.5rem">
+    <div class="glass track-card reveal">
+      <span class="track-num">01</span>
+      <div>
+        <h4>On-Device Machine Learning</h4>
+        <p>Quantized edge AI model running inference without cloud, a true emerging-tech deployment.</p>
+      </div>
+    </div>
+    <div class="glass track-card reveal reveal-delay-1">
+      <span class="track-num">02</span>
+      <div>
+        <h4>Multilingual AI (Bhashini)</h4>
+        <p>India's national language AI platform used to bridge the voice-AI gap for regional farmers.</p>
+      </div>
+    </div>
+    <div class="glass track-card reveal reveal-delay-2">
+      <span class="track-num">03</span>
+      <div>
+        <h4>Computer Vision for AgriTech</h4>
+        <p>Fine-tuned MobileNetV3 on crop-disease datasets — pushing vision AI into rural hands.</p>
+      </div>
+    </div>
+    <div class="glass track-card reveal reveal-delay-3">
+      <span class="track-num">04</span>
+      <div>
+        <h4>Offline-First Architecture</h4>
+        <p>SQLite cache + sync pattern solves connectivity-gap constraints for 600M+ rural Indians.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section page" style="padding-top:0">
+  <div class="final-cta reveal">
+    <h2>INNOVATE.<br><span style="color:var(--o2)">BUILD.</span> INSPIRE.</h2>
+    <p>KisanDrishti AI — Built for Indian Agriculture. Ready for Round 2 Prototype Development.</p>
+    <div class="final-cta-btns">
+      <a href="problem.html" class="btn btn-ghost">The Problem ↗</a>
+      <a href="solution.html" class="btn btn-primary">Our Solution →</a>
+    </div>
+    <div class="built-by">
+      Built by <strong>Nishant Navin Singh</strong> &nbsp;·&nbsp; DevHarbour · Innovate India 2026 &nbsp;·&nbsp; Track: AI &amp; Emerging Technologies
+    </div>
+  </div>
+</section>
+
+<footer class="page">
+  <a href="index.html" class="footer-logo">Kisan<span>Drishti</span> AI</a>
+  <ul class="footer-links">
+    <li><a href="problem.html">Problem</a></li>
+    <li><a href="solution.html">Solution</a></li>
+    <li><a href="impact.html">Impact</a></li>
+  </ul>
+  <p>Built by Nishant Navin Singh · Innovate India 2026</p>
+</footer>
+
+<script src="nav.js"></script>
+</body>
+</html>
